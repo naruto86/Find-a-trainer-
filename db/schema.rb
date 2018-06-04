@@ -10,10 +10,48 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_04_075542) do
+ActiveRecord::Schema.define(version: 2018_06_04_121708) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "bookings", force: :cascade do |t|
+    t.integer "hours"
+    t.integer "total_price"
+    t.bigint "trainer_id"
+    t.bigint "review_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["review_id"], name: "index_bookings_on_review_id"
+    t.index ["trainer_id"], name: "index_bookings_on_trainer_id"
+    t.index ["user_id"], name: "index_bookings_on_user_id"
+  end
+
+  create_table "expertises", force: :cascade do |t|
+    t.string "name"
+    t.integer "difficulty_level"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.string "title"
+    t.string "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "trainers", force: :cascade do |t|
+    t.integer "hourly_rate"
+    t.bigint "user_id"
+    t.bigint "expertise_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "photo"
+    t.index ["expertise_id"], name: "index_trainers_on_expertise_id"
+    t.index ["user_id"], name: "index_trainers_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -28,8 +66,17 @@ ActiveRecord::Schema.define(version: 2018_06_04_075542) do
     t.inet "last_sign_in_ip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.integer "age"
+    t.string "gender"
+    t.string "address"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "bookings", "trainers"
+  add_foreign_key "bookings", "users"
+  add_foreign_key "trainers", "expertises"
+  add_foreign_key "trainers", "users"
 end
