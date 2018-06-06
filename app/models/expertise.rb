@@ -1,3 +1,4 @@
 class Expertise < ApplicationRecord
-  has_many :trainers
+
+belongs_to :trainer
 end

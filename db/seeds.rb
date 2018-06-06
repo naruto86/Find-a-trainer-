@@ -42,6 +42,7 @@ expertise.save!
 expertise = Expertise.new(name: "posture")
 expertise.save!
 
+
 p "Destroying data....."
 Trainer.destroy_all
 p 'creating training_services'
@@ -58,4 +59,3 @@ current_expertise_id = 0
     )
   trainer.save!
 end
-
