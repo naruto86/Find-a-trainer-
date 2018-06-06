@@ -1,10 +1,14 @@
 class TrainersController < ApplicationController
+  skip_before_action :authenticate_user!
+
   def index
     @trainers = Trainer.all
+
   end
 
   def show
-    @trainer = Trainer.find(paramas[:id])
+    @trainer = Trainer.find(params[:id])
+    @expertise = Expertise.find(@trainer[:expertise_id])
   end
 
   def new
