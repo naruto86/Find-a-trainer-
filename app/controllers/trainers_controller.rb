@@ -3,7 +3,6 @@ class TrainersController < ApplicationController
 
   def index
     @trainers = Trainer.all
-
   end
 
   def show
@@ -12,12 +11,23 @@ class TrainersController < ApplicationController
   end
 
   def new
+    @user = current_user
     @trainer = Trainer.new
+    @trainer.user = @user
   end
 
   def create
-    @trainer = Trainer.new(params[:trainer])
-    @trainer.save
+
+    @user = current_user
+    @trainer = Trainer.new(trainer_params)
+    @trainer.user = @user
+    if @trainer.save
+    redirect_to trainer_path(@trainer)
+
+      end
+
+      @expertise = Expertise.all
+
   end
 
   def edit
@@ -26,19 +36,22 @@ class TrainersController < ApplicationController
   end
 
   def update
-    @trainer = Trainer.find(params[:id])
-    @trainer.update(params[:trainer_params])
+    # @trainer = Trainer.find(params[:id])
+    # @trainer.update(params[:trainer_params])
   end
 
   def destroy
-    @trainer = Trainer.find(paramas[:id])
-    @trainer.destroy
+    # @trainer = Trainer.find(paramas[:id])
+    # @trainer.destroy
   end
 
 
 
-private
+  private
   def trainer_params
     params.require(:trainer).permit(:expertise_id,:hourly_rate)
   end
 end
+
+
+
